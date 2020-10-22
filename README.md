@@ -1,4 +1,7 @@
 # TweetParser
+
+![Swift](https://github.com/murilxaraujo/TweetParser/workflows/Swift/badge.svg)
+
 Este projeto implementa a solução do desafio proposto em [Enunciado.md](https://github.com/murilxaraujo/TweetParser/blob/main/Enunciado.md) em Swift através de uma aplicação CLI.
 
 ![](https://github.com/murilxaraujo/TweetParser/blob/main/Docs/Screen%20Shot%202020-10-21%20at%2021.34.56.png?raw=true)
