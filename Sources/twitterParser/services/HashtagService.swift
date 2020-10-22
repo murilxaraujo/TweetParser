@@ -42,6 +42,11 @@ class HashtagService {
                 items.append((hashTag: hashtag, idioma: tweet.language))
             }
         }
+        
+        items.filter { (item) -> Bool in
+            return isValidLanguage(item.idioma)
+        }
+        
         return items.sorted { (item1, item2) -> Bool in
             return item1.hashTag.text.count < item2.hashTag.text.count
         }
