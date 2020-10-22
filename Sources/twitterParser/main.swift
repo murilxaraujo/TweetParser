@@ -34,7 +34,7 @@ struct Tweetparser: ParsableCommand {
         for minLang in minLanguageAmount {
             print("tweets_min|\(minLang.lingua)|\(String(format: "%.2f", LanguageService.shared.getPercentage(quantidade: minLang.quantidade, total: tweets.count)))")
         }
-        print("tweets_media|\(LanguageService.shared.getAverageFor(tweets: amountOfTweetsByLanguage, total: tweets.count))")
+        print("tweets_media|\(String(format: "%.2f", LanguageService.shared.getAverageFor(tweets: amountOfTweetsByLanguage, total: tweets.count)))")
         
         let mostPopularHashtags = HashtagService.shared.getMostPopularHashtag(in: tweets)
         
@@ -64,17 +64,17 @@ struct Tweetparser: ParsableCommand {
         print("tweets_selecionados|\(String(format: "%.2f", porcentagem))|\(amountOfTweetsByLanguage.count)")
         
         let hashtagsSorted = HashtagService.shared.hashTagsSorted(tweets)
+        
         let maioresHashtags = hashtagsSorted.filter { (item) -> Bool in
             return item.hashTag.text.count == hashtagsSorted.last?.hashTag.text.count
         }
-        
         for hashtag in maioresHashtags {
             print("hashtag_maior|\(hashtag.hashTag.text.uppercased())|\(hashtag.idioma)|\(hashtag.hashTag.text.count)")
         }
+        
         let menoresHashtags = hashtagsSorted.filter { (item) -> Bool in
             return item.hashTag.text.count == hashtagsSorted.first?.hashTag.text.count
         }
-        
         for hashtag in menoresHashtags {
             print("hashtag_menor|\(hashtag.hashTag.text.uppercased())|\(hashtag.idioma)|\(hashtag.hashTag.text.count)")
         }
