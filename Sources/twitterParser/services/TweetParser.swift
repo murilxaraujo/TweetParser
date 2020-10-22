@@ -29,13 +29,8 @@ class TweetParser {
             throw MAError(title: "Erro de serialização", description: "Não foi possível obter o conteúdo do tweet", code: 3)
         }
         
-        guard let timestamp = json["timestamp_ms"] as? String,
-              let timestampDouble = Double(timestamp) else {
-            throw MAError(title: "Erro de serialização", description: "Não foi possível obter a data do tweet", code: 3)
-        }
-        
         guard let entities = json["entities"] as? [String:Any],
-              let hashtagsString = entities["hashtags"] as? [String] else {
+              let hashtagsString = entities["hashtags"] as? Array<Dictionary<String, Any>> else {
             throw MAError(title: "Erro de serialização", description: "Não foi possível obter as hashtags do tweet", code: 3)
         }
         
@@ -44,7 +39,7 @@ class TweetParser {
         
         for hashtagString in hashtagsString {
             do {
-                let hashtag = try parseHashtag(hashtagString: hashtagString)
+                let hashtag = try parseHashtag(hashtagString)
                 hashtags.append(hashtag)
             } catch let e {
                 if isVerbose {
@@ -52,25 +47,15 @@ class TweetParser {
                 }
             }
         }
-        return Tweet(text: content, created: Date(timeIntervalSince1970: timestampDouble), language: language, hashtags: hashtags)
+        return Tweet(text: content, language: language, hashtags: hashtags)
     }
     
-    func parseHashtag(hashtagString: String) throws -> Hashtag {
-        guard let data = hashtagString.data(using: .utf8),
-              let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-            throw MAError(title: "Erro de serialização", description: "Não foi possível obter a hashtag to tweet", code: 4)
-        }
-        
+    func parseHashtag(_ json: [String: Any]) throws -> Hashtag {
         guard let hashtagText = json["text"] as? String else  {
             throw MAError(title: "Erro de serialização", description: "Não foi possível obter o texto da hashtag", code: 5)
         }
         
-        guard let indexes = json["indices"] as? [Int],
-              indexes.count == 2 else {
-            throw MAError(title: "Erro de serialização", description: "Não foi possível obter o range da hashtag", code: 6)
-        }
-        
-        return Hashtag(text: hashtagText, position: NSRange(location: indexes[0], length: indexes[1]-indexes[0]+1))
+        return Hashtag(text: hashtagText)
     }
     
     /// Get a tweet array from json array string
