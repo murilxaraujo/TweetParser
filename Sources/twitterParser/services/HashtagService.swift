@@ -30,7 +30,7 @@ class HashtagService {
     
     func amountOfTweetsWithOnePlushHashtagsinLanguages(tweets: [Tweet]) -> Int {
         let items = tweets.filter { (tweet) -> Bool in
-            return tweet.hashtags.count > 0 && isValidLanguage(tweet)
+            return tweet.hashtags.count > 0 && isValidLanguage(tweet.language)
         }
         return items.count
     }
@@ -43,7 +43,7 @@ class HashtagService {
             }
         }
         
-        items.filter { (item) -> Bool in
+        items = items.filter { (item) -> Bool in
             return isValidLanguage(item.idioma)
         }
         
@@ -52,8 +52,8 @@ class HashtagService {
         }
     }
     
-    private func isValidLanguage(_ tweet: Tweet) -> Bool {
-        switch tweet.language {
+    private func isValidLanguage(_ tweet: String) -> Bool {
+        switch tweet {
         case "en":
             return true
         case "es":
