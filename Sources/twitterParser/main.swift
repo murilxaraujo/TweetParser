@@ -64,11 +64,19 @@ struct Tweetparser: ParsableCommand {
         print("tweets_selecionados|\(String(format: "%.2f", porcentagem))|\(amountOfTweetsByLanguage.count)")
         
         let hashtagsSorted = HashtagService.shared.hashTagsSorted(tweets)
-        if let maiorHashtag = hashtagsSorted.last {
-            print("hashtag_maior|\(maiorHashtag.hashTag.text.uppercased())|\(maiorHashtag.idioma)|\(maiorHashtag.hashTag.text.count)")
+        let maioresHashtags = hashtagsSorted.filter { (item) -> Bool in
+            return item.hashTag.text.count == hashtagsSorted.last?.hashTag.text.count
         }
-        if let menorHashtag = hashtagsSorted.first {
-            print("hashtag_menor|\(menorHashtag.hashTag.text.uppercased())|\(menorHashtag.idioma)|\(menorHashtag.hashTag.text.count)")
+        
+        for hashtag in maioresHashtags {
+            print("hashtag_maior|\(hashtag.hashTag.text.uppercased())|\(hashtag.idioma)|\(hashtag.hashTag.text.count)")
+        }
+        let menoresHashtags = hashtagsSorted.filter { (item) -> Bool in
+            return item.hashTag.text.count == hashtagsSorted.first?.hashTag.text.count
+        }
+        
+        for hashtag in menoresHashtags {
+            print("hashtag_menor|\(hashtag.hashTag.text.uppercased())|\(hashtag.idioma)|\(hashtag.hashTag.text.count)")
         }
     }
 }
